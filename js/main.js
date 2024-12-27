@@ -125,7 +125,20 @@ $(document).ready(function() {
           }
         });
       } else {
-        tab = document.location.hash.substr("#section/".length);
+        // Handle slide numbers in hash
+        const hashParts = document.location.hash.substr(9).split('-');
+        tab = hashParts[0];
+        const slideNum = parseInt(hashParts[1]);
+
+        // After a short delay to let the tab content load
+        setTimeout(() => {
+          if (!isNaN(slideNum)) {
+            const section = document.querySelector(`.section.${tab} .slideshow-section`);
+            if (section && section.setSlide) {
+              section.setSlide(slideNum);
+            }
+          }
+        }, 100);
       }
 
       // Activate this tab, if this page supports tabs.

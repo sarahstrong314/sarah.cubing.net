@@ -25,7 +25,25 @@ document.addEventListener('DOMContentLoaded', function() {
       });
       prevBtn.style.display = currentSlide === 0 ? 'none' : 'block';
       nextBtn.style.display = currentSlide === slides.length - 1 ? 'none' : 'block';
+
+      // Update URL with slide number
+      const currentHash = window.location.hash;
+      if (currentHash.startsWith('#section/')) {
+        const baseHash = currentHash.split('-')[0];
+        window.location.hash = `${baseHash}-${currentSlide + 1}`;
+      }
     }
+
+    // Function to set slide by number (1-based index)
+    function setSlide(slideNum) {
+      if (slideNum >= 1 && slideNum <= slides.length) {
+        currentSlide = slideNum - 1;
+        updateSlides();
+      }
+    }
+
+    // Expose setSlide function globally
+    section.setSlide = setSlide;
 
     prevBtn.addEventListener('click', () => {
       if (currentSlide > 0) {
